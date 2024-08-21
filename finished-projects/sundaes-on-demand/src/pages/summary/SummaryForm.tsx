@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Popover from "react-bootstrap/Popover";
 
-export default function SummaryForm({ setOrderPhase }) {
-  const [tcChecked, setTcChecked] = useState(false);
+interface SummaryFormProps {
+  setOrderPhase: (phase: string) => void;
+}
 
-  function handleSubmit(event) {
+const SummaryForm: FC<SummaryFormProps> = ({ setOrderPhase }) => {
+  const [tcChecked, setTcChecked] = useState<boolean>(false);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     // pass along to the next phase.
     // The next page will handle submitting order from context.
     setOrderPhase("completed");
-  }
+  };
 
   const popover = (
     <Popover id="popover-basic">
@@ -45,4 +49,6 @@ export default function SummaryForm({ setOrderPhase }) {
       </Button>
     </Form>
   );
-}
+};
+
+export default SummaryForm;

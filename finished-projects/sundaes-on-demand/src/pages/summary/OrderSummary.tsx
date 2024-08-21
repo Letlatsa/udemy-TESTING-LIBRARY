@@ -1,12 +1,17 @@
-import React from "react";
+import React, { FC } from "react";
 import SummaryForm from "./SummaryForm";
 import { useOrderDetails } from "../../contexts/OrderDetails";
 import { formatCurrency } from "../../utilities";
+import { OptionCounts, Totals } from "../../interfaces";
 
-export default function OrderSummary({ setOrderPhase }) {
+interface OrderSummaryProps {
+  setOrderPhase: (phase: string) => void;
+}
+
+const OrderSummary: FC<OrderSummaryProps> = ({ setOrderPhase }) => {
   const { totals, optionCounts } = useOrderDetails();
 
-  const scoopArray = Object.entries(optionCounts.scoops);
+  const scoopArray = Object.entries(optionCounts.scoops as OptionCounts["scoops"]);
   const scoopList = scoopArray.map(([key, value]) => (
     <li key={key}>
       {value} {key}
@@ -15,10 +20,10 @@ export default function OrderSummary({ setOrderPhase }) {
 
   // only display toppings if the toppings total is nonzero
   const hasToppings = totals.toppings > 0;
-  let toppingsDisplay = null;
+  let toppingsDisplay: React.ReactNode = null;
 
   if (hasToppings) {
-    const toppingsArray = Object.keys(optionCounts.toppings);
+    const toppingsArray = Object.keys(optionCounts.toppings as OptionCounts["toppings"]);
     const toppingList = toppingsArray.map((key) => <li key={key}>{key}</li>);
     toppingsDisplay = (
       <>
@@ -37,4 +42,6 @@ export default function OrderSummary({ setOrderPhase }) {
       <SummaryForm setOrderPhase={setOrderPhase} />
     </div>
   );
-}
+};
+
+export default OrderSummary;

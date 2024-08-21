@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, FC } from "react";
 import Container from "react-bootstrap/Container";
 
 import OrderConfirmation from "./pages/confirmation/OrderConfirmation";
@@ -7,9 +7,11 @@ import OrderSummary from "./pages/summary/OrderSummary";
 
 import { OrderDetailsProvider } from "./contexts/OrderDetails";
 
-export default function App() {
+type SetOrderPhase = (phase: "inProgress" | "review" | "completed") => void;
+
+const App: FC = () => {
   // orderPhase needs to be 'inProgress', 'review' or 'completed'
-  const [orderPhase, setOrderPhase] = useState("inProgress");
+  const [orderPhase, setOrderPhase] = useState<"inProgress" | "review" | "completed">("inProgress");
 
   let Component = OrderEntry; // default to order page
   switch (orderPhase) {
@@ -27,7 +29,9 @@ export default function App() {
 
   return (
     <OrderDetailsProvider>
-      <Container>{<Component setOrderPhase={setOrderPhase} />}</Container>
+      <Container>{<Component setOrderPhase={setOrderPhase as SetOrderPhase} />}</Container>
     </OrderDetailsProvider>
   );
-}
+};
+
+export default App;

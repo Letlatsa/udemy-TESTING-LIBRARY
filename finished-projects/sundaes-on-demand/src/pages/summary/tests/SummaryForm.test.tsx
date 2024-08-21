@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import SummaryForm from "../SummaryForm";
-import userEvent from "@testing-library/user-event";
+import userEvent, { UserEvent } from "@testing-library/user-event";
+import React from "react";
 
 test("Initial conditions", () => {
-  render(<SummaryForm />);
+  render(<SummaryForm setOrderPhase={jest.fn()} />);
   const checkbox = screen.getByRole("checkbox", {
     name: /terms and conditions/i,
   });
@@ -14,9 +15,9 @@ test("Initial conditions", () => {
 });
 
 test("Checkbox enables button on first click and disables on second click", async () => {
-  const user = userEvent.setup();
+  const user: UserEvent = userEvent.setup();
 
-  render(<SummaryForm />);
+  render(<SummaryForm setOrderPhase={jest.fn()} />);
   const checkbox = screen.getByRole("checkbox", {
     name: /terms and conditions/i,
   });
@@ -30,8 +31,8 @@ test("Checkbox enables button on first click and disables on second click", asyn
 });
 
 test("popover responds to hover", async () => {
-  const user = userEvent.setup();
-  render(<SummaryForm />);
+  const user: UserEvent = userEvent.setup();
+  render(<SummaryForm setOrderPhase={jest.fn()} />);
 
   // popover starts out hidden
   const nullPopover = screen.queryByText(
@@ -49,3 +50,7 @@ test("popover responds to hover", async () => {
   await user.unhover(termsAndConditions);
   expect(popover).not.toBeInTheDocument();
 });
+
+function expect(checkbox: HTMLElement) {
+  throw new Error("Function not implemented.");
+}

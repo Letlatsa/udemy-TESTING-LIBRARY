@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse, CancelToken, CancelTokenSource } from "axios";
 import { useEffect, useState } from "react";
 import Row from "react-bootstrap/Row";
 import ScoopOption from "./ScoopOption";
@@ -7,18 +7,26 @@ import AlertBanner from "../common/AlertBanner";
 import { pricePerItem } from "../../constants";
 import { formatCurrency } from "../../utilities";
 import { useOrderDetails } from "../../contexts/OrderDetails";
+import React from "react";
 
-export default function Options({ optionType }) {
-  const [items, setItems] = useState([]);
+interface Item {
+  name: string;
+  imagePath: string;
+}
+
+type OptionType = "scoops" | "toppings";
+
+export default function Options({ optionType }: { optionType: OptionType }) {
+  const [items, setItems] = useState<Item[]>([]);
   const [error, setError] = useState(false);
   const { totals } = useOrderDetails();
 
-  // optionType is 'scoops' or 'toppings
+  // optionType is 'scoops' or 'toppings'
   useEffect(() => {
     const controller = new AbortController();
     axios
-      .get(`http://localhost:3030/${optionType}`, { signal: controller.signal })
-      .then((response) => setItems(response.data))
+      .get<Item[]>(`http://localhost:3030/${optionType}`, { signal: controller.signal })
+      .then((response: AxiosResponse<Item[]>) => setItems(response.data))
       .catch((error) => {
         if (error.name !== "CanceledError") setError(true);
       });
@@ -27,7 +35,6 @@ export default function Options({ optionType }) {
   }, [optionType]);
 
   if (error) {
-    // @ts-ignore
     return <AlertBanner />;
   }
 

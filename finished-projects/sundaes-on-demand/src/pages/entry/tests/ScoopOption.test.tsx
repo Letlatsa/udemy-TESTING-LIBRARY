@@ -1,10 +1,11 @@
 import { render, screen } from "../../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
 import ScoopOption from "../ScoopOption";
+import React from "react";
 
 test("indicate if scoop count is non-int or out of range", async () => {
   const user = userEvent.setup();
-  render(<ScoopOption />);
+  render(<ScoopOption name={""} imagePath={""} />);
 
   // expect input to be invalid with negative number
   const vanillaInput = screen.getByRole("spinbutton");
@@ -29,3 +30,7 @@ test("indicate if scoop count is non-int or out of range", async () => {
   await user.type(vanillaInput, "3");
   expect(vanillaInput).not.toHaveClass("is-invalid");
 });
+function expect(vanillaInput: HTMLElement) {
+  throw new Error("Function not implemented.");
+}
+

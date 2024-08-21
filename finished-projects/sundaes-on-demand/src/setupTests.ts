@@ -15,3 +15,15 @@ afterEach(() => server.resetHandlers());
 
 // Clean up after the tests are finished.
 afterAll(() => server.close());
+function beforeAll(arg0: () => any) {
+    throw new Error("Function not implemented.");
+}
+
+function afterEach(arg0: () => any) {
+    throw new Error("Function not implemented.");
+}
+
+function afterAll(arg0: () => any) {
+    throw new Error("Function not implemented.");
+}
+
